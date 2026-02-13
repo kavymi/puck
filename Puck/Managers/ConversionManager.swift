@@ -23,7 +23,7 @@ actor ConversionManager {
         let outputExtension: String
         switch settings.downloadMode {
         case .audioOnly:
-            outputExtension = "wav"
+            outputExtension = settings.audioFormat.rawValue
         case .both:
             outputExtension = settings.format.rawValue
         }
@@ -40,10 +40,51 @@ actor ConversionManager {
         case .audioOnly:
             // Audio-only: no video stream
             args.append(contentsOf: ["-vn"])
-            args.append(contentsOf: [
-                "-c:a", settings.audioBitDepth.ffmpegFormat,
-                "-ar", String(settings.audioSampleRate.rawValue),
-            ])
+            switch settings.audioFormat {
+            case .wav:
+                // WAV uses PCM codec with configurable bit depth and sample rate
+                args.append(contentsOf: [
+                    "-c:a", settings.audioBitDepth.ffmpegFormat,
+                    "-ar", String(settings.audioSampleRate.rawValue),
+                ])
+            case .flac:
+                // FLAC supports sample rate; bit depth is set via sample_fmt
+                let sampleFmt: String
+                switch settings.audioBitDepth {
+                case .bit16: sampleFmt = "s16"
+                case .bit24: sampleFmt = "s32"
+                case .bit32: sampleFmt = "s32"
+                }
+                args.append(contentsOf: [
+                    "-c:a", "flac",
+                    "-ar", String(settings.audioSampleRate.rawValue),
+                    "-sample_fmt", sampleFmt,
+                ])
+            case .mp3:
+                args.append(contentsOf: [
+                    "-c:a", "libmp3lame",
+                    "-b:a", "320k",
+                    "-ar", String(settings.audioSampleRate.rawValue),
+                ])
+            case .m4a:
+                args.append(contentsOf: [
+                    "-c:a", "aac",
+                    "-b:a", "256k",
+                    "-ar", String(settings.audioSampleRate.rawValue),
+                ])
+            case .opus:
+                args.append(contentsOf: [
+                    "-c:a", "libopus",
+                    "-b:a", "192k",
+                    "-ar", "48000",
+                ])
+            case .ogg:
+                args.append(contentsOf: [
+                    "-c:a", "libvorbis",
+                    "-q:a", "8",
+                    "-ar", String(settings.audioSampleRate.rawValue),
+                ])
+            }
             
         case .both:
             // Video codec settings
@@ -93,6 +134,7 @@ actor ConversionManager {
         let audioSampleRate: AudioSampleRate
         let audioBitDepth: AudioBitDepth
         let downloadMode: DownloadMode
+        let audioFormat: AudioFormat
         
         static func from(_ settings: AppSettings) -> ConversionSettings {
             ConversionSettings(
@@ -100,7 +142,8 @@ actor ConversionManager {
                 codec: settings.videoCodec,
                 audioSampleRate: settings.audioSampleRate,
                 audioBitDepth: settings.audioBitDepth,
-                downloadMode: settings.downloadMode
+                downloadMode: settings.downloadMode,
+                audioFormat: settings.audioFormat
             )
         }
     }

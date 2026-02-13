@@ -129,9 +129,15 @@ struct SettingsView: View {
                     }
                 }
                 
-                Text("Audio Only extracts audio. Video + Audio downloads both video and audio.")
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+                if settings.downloadMode == .audioOnly && settings.audioFormat == .wav {
+                    Text("WAV requires ffmpeg to apply sample rate & bit depth settings.\nInstall via: brew install ffmpeg")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
+                } else {
+                    Text("Audio Only extracts audio. Video + Audio downloads both video and audio.")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
             }
             .padding(10)
             .background(Color(.controlBackgroundColor))
@@ -158,12 +164,9 @@ struct SettingsView: View {
                     .labelsHidden()
                 }
                 
-                HStack {
-                    Text("Quality")
-                        .frame(width: 100, alignment: .leading)
-                    Toggle("Download highest quality", isOn: Bindable(settings).downloadHighestQuality)
-                        .toggleStyle(.checkbox)
-                }
+                Text("Always downloads highest available quality.")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
             }
             .padding(10)
             .background(Color(.controlBackgroundColor))

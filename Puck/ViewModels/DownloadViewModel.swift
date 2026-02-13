@@ -37,6 +37,9 @@ final class DownloadViewModel {
             log("ffmpeg found")
         } else {
             log("WARNING: ffmpeg not found. Install via: brew install ffmpeg")
+            if settings.audioFormat == .wav && settings.downloadMode == .audioOnly {
+                log("WARNING: WAV audio requires ffmpeg for conversion. Without it, audio settings (sample rate, bit depth) will not be applied.")
+            }
         }
     }
     
@@ -166,8 +169,6 @@ final class DownloadViewModel {
             let outputDir = settings.outputDirectory
             try settings.ensureOutputDirectoryExists()
             
-            let isAudioOnly = settings.downloadMode == .audioOnly
-            
             let downloadedPath = try await downloadManager.downloadAndGetPath(
                 url: item.url,
                 to: outputDir,
@@ -193,8 +194,9 @@ final class DownloadViewModel {
             
             log("Downloaded: \(filename)")
             
-            // Convert if enabled (skip conversion for audio-only downloads)
-            if !isAudioOnly && settings.autoConvert && ffmpegAvailable {
+            // Convert if enabled, or always for WAV audio-only (to apply sample rate / bit depth)
+            let needsConversion = (settings.autoConvert || (settings.downloadMode == .audioOnly && settings.audioFormat == .wav)) && ffmpegAvailable
+            if needsConversion {
                 item.status = .converting
                 item.statusMessage = "Starting conversion..."
                 item.conversionProgress = 0
@@ -313,8 +315,6 @@ final class DownloadViewModel {
         log("[\(subItem.playlistIndex ?? 0)/\(total)] \(subItem.title)")
         
         do {
-            let isAudioOnly = settings.downloadMode == .audioOnly
-            
             let downloadedPath = try await downloadManager.downloadAndGetPath(
                 url: subItem.url,
                 to: playlistDir,
@@ -332,8 +332,9 @@ final class DownloadViewModel {
                 subItem.title = filename
             }
             
-            // Convert if enabled (skip conversion for audio-only downloads)
-            if !isAudioOnly && settings.autoConvert && ffmpegAvailable {
+            // Convert if enabled, or always for WAV audio-only (to apply sample rate / bit depth)
+            let needsConversion = (settings.autoConvert || (settings.downloadMode == .audioOnly && settings.audioFormat == .wav)) && ffmpegAvailable
+            if needsConversion {
                 subItem.status = .converting
                 subItem.statusMessage = "Starting conversion..."
                 subItem.conversionProgress = 0

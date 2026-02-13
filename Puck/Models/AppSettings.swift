@@ -108,9 +108,6 @@ final class AppSettings: @unchecked Sendable {
     var audioBitDepth: AudioBitDepth = .bit24 {
         didSet { save() }
     }
-    var downloadHighestQuality: Bool = true {
-        didSet { save() }
-    }
     var downloadMode: DownloadMode = .both {
         didSet { save() }
     }
@@ -159,7 +156,6 @@ final class AppSettings: @unchecked Sendable {
         if let raw = defaults.string(forKey: "audioFormat"), let val = AudioFormat(rawValue: raw) {
             audioFormat = val
         }
-        downloadHighestQuality = defaults.object(forKey: "downloadHighestQuality") as? Bool ?? true
         autoConvert = defaults.object(forKey: "autoConvert") as? Bool ?? true
         preserveOriginal = defaults.object(forKey: "preserveOriginal") as? Bool ?? false
         if let saved = defaults.integer(forKey: "maxConcurrentDownloads") as Int?, saved > 0 {
@@ -175,7 +171,6 @@ final class AppSettings: @unchecked Sendable {
         defaults.set(audioBitDepth.rawValue, forKey: "audioBitDepth")
         defaults.set(downloadMode.rawValue, forKey: "downloadMode")
         defaults.set(audioFormat.rawValue, forKey: "audioFormat")
-        defaults.set(downloadHighestQuality, forKey: "downloadHighestQuality")
         defaults.set(autoConvert, forKey: "autoConvert")
         defaults.set(preserveOriginal, forKey: "preserveOriginal")
         defaults.set(maxConcurrentDownloads, forKey: "maxConcurrentDownloads")
