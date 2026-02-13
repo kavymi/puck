@@ -23,8 +23,21 @@ struct ContentView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
             
+            // Inline Settings
+            if showSettings {
+                Divider()
+                    .padding(.top, 12)
+                
+                ScrollView {
+                    SettingsView()
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                }
+                .frame(maxHeight: 300)
+            }
+            
             Divider()
-                .padding(.top, 12)
+                .padding(.top, showSettings ? 0 : 12)
             
             // Download Queue
             if !viewModel.items.isEmpty {
@@ -47,9 +60,6 @@ struct ContentView: View {
             if isDropTargeted {
                 dropOverlay
             }
-        }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -210,9 +220,11 @@ struct ContentView: View {
             }
             
             Button {
-                showSettings = true
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    showSettings.toggle()
+                }
             } label: {
-                Label("Settings", systemImage: "gear")
+                Label("Settings", systemImage: showSettings ? "gear.badge.checkmark" : "gear")
             }
         }
     }

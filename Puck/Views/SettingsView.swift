@@ -1,43 +1,18 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.dismiss) private var dismiss
     private var settings = AppSettings.shared
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Header
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Settings")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    Text("Configure Puck's abilities")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer()
-                Button("Done") { dismiss() }
-                    .keyboardShortcut(.escape, modifiers: [])
+        VStack(alignment: .leading, spacing: 16) {
+            outputSection
+            performanceSection
+            downloadModeSection
+            if settings.downloadMode != .audioOnly {
+                videoSection
             }
-            .padding(20)
-            
-            Divider()
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    outputSection
-                    performanceSection
-                    downloadModeSection
-                    if settings.downloadMode != .audioOnly {
-                        videoSection
-                    }
-                    audioSection
-                }
-                .padding(20)
-            }
+            audioSection
         }
-        .frame(width: 480, height: 600)
     }
     
     // MARK: - Output
