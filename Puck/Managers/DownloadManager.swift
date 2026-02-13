@@ -192,6 +192,7 @@ actor DownloadManager {
             "--no-warnings",
             "--no-playlist",
             "--print", "after_move:filepath",
+            "--progress-template", "download:%(progress._percent_str)s %(progress._speed_str)s %(progress._eta_str)s",
             "--retries", "10",
             "--fragment-retries", "10",
             "--socket-timeout", "15",
@@ -342,10 +343,14 @@ actor DownloadManager {
                     }
                     
                     // Detect merged/downloaded file path
-                    if trimmed.hasPrefix("[Merger]") || trimmed.hasPrefix("[download]") {
+                    if trimmed.hasPrefix("[Merger]") || trimmed.hasPrefix("[download]") || trimmed.hasPrefix("[ExtractAudio]") {
                         if let path = self.extractPath(from: trimmed) {
                             lastFilePath = path
                         }
+                    }
+                    // Capture bare filepath from --print after_move:filepath
+                    else if !trimmed.hasPrefix("download:") && !trimmed.contains("%") && trimmed.hasPrefix("/") {
+                        lastFilePath = trimmed
                     }
                 }
             }
@@ -362,6 +367,12 @@ actor DownloadManager {
                         lastProgressUpdate = now
                         if let pct = self.parsePercent(from: trimmed) {
                             progress(pct / 100.0, "Downloading: \(String(format: "%.1f%%", pct))")
+                        }
+                    }
+                    // Capture file paths from stderr (yt-dlp writes [ExtractAudio], [Merger], [download] here)
+                    if trimmed.hasPrefix("[Merger]") || trimmed.hasPrefix("[ExtractAudio]") || trimmed.hasPrefix("[download]") {
+                        if let path = self.extractPath(from: trimmed) {
+                            lastFilePath = path
                         }
                     }
                 }
