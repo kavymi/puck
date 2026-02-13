@@ -46,7 +46,7 @@ The DMG includes bundled `yt-dlp` and `ffmpeg` — no additional installs needed
 - Xcode 15.4+
 
 ```bash
-git clone https://github.com/kavyrattana/puck.git
+git clone https://github.com/kavymi/puck.git
 cd puck
 open Puck.xcodeproj
 ```
