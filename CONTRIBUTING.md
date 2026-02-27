@@ -1,16 +1,16 @@
-# Contributing to Puck
+# Contributing to Pluck
 
-Thanks for your interest in contributing! Puck is a small, focused macOS app and we welcome improvements of all kinds.
+Thanks for your interest in contributing! Pluck is a small, focused macOS app and we welcome improvements of all kinds.
 
 ## Getting Started
 
 1. **Fork** the repository
 2. **Clone** your fork:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/puck.git
-   cd puck
+   git clone https://github.com/YOUR_USERNAME/pluck.git
+   cd pluck
    ```
-3. **Open** `Puck.xcodeproj` in Xcode 15.4+
+3. **Open** `Pluck.xcodeproj` in Xcode 15.4+
 4. **Install** dependencies for local development:
    ```bash
    brew install yt-dlp ffmpeg

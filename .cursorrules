@@ -1,0 +1,45 @@
+# Pluck — Cursor Rules
+
+## Project Context
+Pluck is a native macOS SwiftUI video/audio downloader wrapping yt-dlp and ffmpeg. It targets macOS 14.0+ with Xcode 15.4+ and has zero third-party Swift dependencies.
+
+## Code Style
+- Use Swift Concurrency (`actor`, `async/await`, `TaskGroup`) for all concurrent work — never use GCD
+- Use `@Observable` (Observation framework), not `ObservableObject`/`@Published`
+- Use `Bindable()` for two-way bindings in SwiftUI views
+- Use `Sendable` types for data crossing concurrency boundaries
+- Organize with `// MARK: - Section Name` comments
+- Keep views in `Views/`, business logic in `Managers/` and `ViewModels/`
+- No third-party Swift packages — pure SwiftUI + Foundation only
+
+## Architecture Rules
+- `BinaryManager` is a static struct — no instances, thread-safe via NSLock cache
+- `DownloadManager` and `ConversionManager` are actors — all methods are async
+- `DownloadViewModel` is `@Observable @MainActor` — UI state lives here
+- `AppSettings` is an `@Observable` singleton with `UserDefaults` persistence
+- Child processes (`Process`) are used for yt-dlp/ffmpeg — parse stdout/stderr for progress
+
+## Animation Guidelines
+- Use `.spring(duration:bounce:)` for interactive/user-triggered animations
+- Use `.easeInOut` for state-driven transitions
+- Use `.symbolEffect()` for SF Symbol animations
+- Use `.contentTransition(.numericText())` for changing numbers
+- Theme gradient: cyan `Color(red: 0.4, green: 0.8, blue: 1.0)` → purple `Color(red: 0.6, green: 0.5, blue: 1.0)`
+
+## File Organization
+```
+Pluck/
+├── PluckApp.swift             # @main entry point
+├── Models/                    # Data models and enums
+├── Managers/                  # Actor-based business logic (yt-dlp, ffmpeg, binary discovery)
+├── ViewModels/                # @MainActor view models
+└── Views/                     # SwiftUI views
+```
+
+## Do NOT
+- Add third-party Swift dependencies
+- Use `ObservableObject` or `@Published`
+- Use GCD (`DispatchQueue`) for new concurrent code
+- Hardcode binary paths — always use `BinaryManager`
+- Block the main thread with synchronous process execution
+- Remove or weaken existing error handling

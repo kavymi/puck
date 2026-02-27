@@ -1,13 +1,13 @@
 import SwiftUI
 
 @main
-struct PuckApp: App {
+struct PluckApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .windowStyle(.titleBar)
-        .defaultSize(width: 780, height: 700)
+        .defaultSize(width: 800, height: 720)
         .commands {
             CommandGroup(replacing: .newItem) {}
         }

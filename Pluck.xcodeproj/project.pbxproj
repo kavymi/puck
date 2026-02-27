@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000010000000000000001 /* PuckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000001 /* PuckApp.swift */; };
+		A10000010000000000000001 /* PluckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000001 /* PluckApp.swift */; };
 		A10000020000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000020000000000000002 /* ContentView.swift */; };
 		A10000030000000000000003 /* DownloadItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000030000000000000003 /* DownloadItemRow.swift */; };
 		A10000040000000000000004 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000040000000000000004 /* SettingsView.swift */; };
@@ -18,10 +18,12 @@
 		A10000090000000000000009 /* ConversionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000090000000000000009 /* ConversionManager.swift */; };
 		A1000010000000000000000A /* DownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010000000000000000A /* DownloadViewModel.swift */; };
 		A1000011000000000000000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000011000000000000000B /* Assets.xcassets */; };
+		A1000012000000000000000C /* NLEIntegrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013000000000000000D /* NLEIntegrationManager.swift */; };
+		A1000014000000000000000E /* PuckTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014000000000000000E /* PuckTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A20000010000000000000001 /* PuckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuckApp.swift; sourceTree = "<group>"; };
+		A20000010000000000000001 /* PluckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluckApp.swift; sourceTree = "<group>"; };
 		A20000020000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A20000030000000000000003 /* DownloadItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItemRow.swift; sourceTree = "<group>"; };
 		A20000040000000000000004 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -32,8 +34,10 @@
 		A20000090000000000000009 /* ConversionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionManager.swift; sourceTree = "<group>"; };
 		A2000010000000000000000A /* DownloadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewModel.swift; sourceTree = "<group>"; };
 		A2000011000000000000000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A2000012000000000000000C /* Puck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Puck.entitlements; sourceTree = "<group>"; };
-		A3000001000000000000000D /* Puck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Puck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000012000000000000000C /* Pluck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pluck.entitlements; sourceTree = "<group>"; };
+		A2000013000000000000000D /* NLEIntegrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLEIntegrationManager.swift; sourceTree = "<group>"; };
+		A2000014000000000000000E /* PuckTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuckTheme.swift; sourceTree = "<group>"; };
+		A3000001000000000000000D /* Pluck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pluck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,29 +54,29 @@
 		A5000001000000000000000F /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				A500000200000000000000010 /* Puck */,
+				A500000200000000000000010 /* Pluck */,
 				A500000300000000000000011 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A500000200000000000000010 /* Puck */ = {
+		A500000200000000000000010 /* Pluck */ = {
 			isa = PBXGroup;
 			children = (
-				A20000010000000000000001 /* PuckApp.swift */,
+				A20000010000000000000001 /* PluckApp.swift */,
 				A500000400000000000000012 /* Models */,
 				A500000500000000000000013 /* Managers */,
 				A500000600000000000000014 /* ViewModels */,
 				A500000700000000000000015 /* Views */,
 				A2000011000000000000000B /* Assets.xcassets */,
-				A2000012000000000000000C /* Puck.entitlements */,
+				A2000012000000000000000C /* Pluck.entitlements */,
 			);
-			path = Puck;
+			path = Pluck;
 			sourceTree = "<group>";
 		};
 		A500000300000000000000011 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A3000001000000000000000D /* Puck.app */,
+				A3000001000000000000000D /* Pluck.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,6 +96,7 @@
 				A20000070000000000000007 /* BinaryManager.swift */,
 				A20000080000000000000008 /* DownloadManager.swift */,
 				A20000090000000000000009 /* ConversionManager.swift */,
+				A2000013000000000000000D /* NLEIntegrationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -110,6 +115,7 @@
 				A20000020000000000000002 /* ContentView.swift */,
 				A20000030000000000000003 /* DownloadItemRow.swift */,
 				A20000040000000000000004 /* SettingsView.swift */,
+				A2000014000000000000000E /* PuckTheme.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -117,9 +123,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A600000100000000000000016 /* Puck */ = {
+		A600000100000000000000016 /* Pluck */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A800000100000000000000019 /* Build configuration list for PBXNativeTarget "Puck" */;
+			buildConfigurationList = A800000100000000000000019 /* Build configuration list for PBXNativeTarget "Pluck" */;
 			buildPhases = (
 				A700000100000000000000017 /* Sources */,
 				A4000001000000000000000E /* Frameworks */,
@@ -129,9 +135,9 @@
 			);
 			dependencies = (
 			);
-			name = Puck;
-			productName = Puck;
-			productReference = A3000001000000000000000D /* Puck.app */;
+			name = Pluck;
+			productName = Pluck;
+			productReference = A3000001000000000000000D /* Pluck.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -149,7 +155,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A80000020000000000000001B /* Build configuration list for PBXProject "Puck" */;
+			buildConfigurationList = A80000020000000000000001B /* Build configuration list for PBXProject "Pluck" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -162,7 +168,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A600000100000000000000016 /* Puck */,
+				A600000100000000000000016 /* Pluck */,
 			);
 		};
 /* End PBXProject section */
@@ -183,7 +189,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000010000000000000001 /* PuckApp.swift in Sources */,
+				A10000010000000000000001 /* PluckApp.swift in Sources */,
 				A10000020000000000000002 /* ContentView.swift in Sources */,
 				A10000030000000000000003 /* DownloadItemRow.swift in Sources */,
 				A10000040000000000000004 /* SettingsView.swift in Sources */,
@@ -193,6 +199,8 @@
 				A10000080000000000000008 /* DownloadManager.swift in Sources */,
 				A10000090000000000000009 /* ConversionManager.swift in Sources */,
 				A1000010000000000000000A /* DownloadViewModel.swift in Sources */,
+				A1000012000000000000000C /* NLEIntegrationManager.swift in Sources */,
+				A1000014000000000000000E /* PuckTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +328,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Puck/Puck.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Pluck/Pluck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -335,7 +343,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.puck.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pluck.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -348,7 +356,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Puck/Puck.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Pluck/Pluck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -363,7 +371,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.puck.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pluck.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -374,7 +382,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A800000100000000000000019 /* Build configuration list for PBXNativeTarget "Puck" */ = {
+		A800000100000000000000019 /* Build configuration list for PBXNativeTarget "Pluck" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B10000030000000000000001E /* Debug */,
@@ -383,7 +391,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A80000020000000000000001B /* Build configuration list for PBXProject "Puck" */ = {
+		A80000020000000000000001B /* Build configuration list for PBXProject "Pluck" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B10000010000000000000001C /* Debug */,

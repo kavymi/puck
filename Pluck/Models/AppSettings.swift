@@ -123,12 +123,18 @@ final class AppSettings: @unchecked Sendable {
     var maxConcurrentDownloads: Int = 4 {
         didSet { save() }
     }
+    var autoImportToNLE: Bool = false {
+        didSet { save() }
+    }
+    var selectedNLE: NLEApp = .none {
+        didSet { save() }
+    }
     
     private let defaults = UserDefaults.standard
     
     private init() {
         let defaultDir = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("Puck")
+            .appendingPathComponent("Pluck")
         
         if let savedPath = defaults.string(forKey: "outputDirectory") {
             outputDirectory = URL(fileURLWithPath: savedPath)
@@ -161,6 +167,10 @@ final class AppSettings: @unchecked Sendable {
         if let saved = defaults.integer(forKey: "maxConcurrentDownloads") as Int?, saved > 0 {
             maxConcurrentDownloads = saved
         }
+        autoImportToNLE = defaults.object(forKey: "autoImportToNLE") as? Bool ?? false
+        if let raw = defaults.string(forKey: "selectedNLE"), let val = NLEApp(rawValue: raw) {
+            selectedNLE = val
+        }
     }
     
     private func save() {
@@ -174,6 +184,8 @@ final class AppSettings: @unchecked Sendable {
         defaults.set(autoConvert, forKey: "autoConvert")
         defaults.set(preserveOriginal, forKey: "preserveOriginal")
         defaults.set(maxConcurrentDownloads, forKey: "maxConcurrentDownloads")
+        defaults.set(autoImportToNLE, forKey: "autoImportToNLE")
+        defaults.set(selectedNLE.rawValue, forKey: "selectedNLE")
     }
     
     func ensureOutputDirectoryExists() throws {

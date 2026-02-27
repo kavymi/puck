@@ -405,11 +405,11 @@ actor DownloadManager {
         }
     }
     
+    private static let percentRegex = try! NSRegularExpression(pattern: #"(\d+\.?\d*)%"#)
+    
     private nonisolated func parsePercent(from string: String) -> Double? {
         // Match patterns like "45.2%" or "100%"
-        let pattern = #"(\d+\.?\d*)%"#
-        guard let regex = try? NSRegularExpression(pattern: pattern),
-              let match = regex.firstMatch(in: string, range: NSRange(string.startIndex..., in: string)),
+        guard let match = Self.percentRegex.firstMatch(in: string, range: NSRange(string.startIndex..., in: string)),
               let range = Range(match.range(at: 1), in: string) else {
             return nil
         }

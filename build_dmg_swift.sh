@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-APP_NAME="Puck"
-DMG_NAME="Puck"
+APP_NAME="Pluck"
+DMG_NAME="Pluck"
 VERSION="2.0.0"
 PROJECT_DIR="$(pwd)"
 BUILD_DIR="${PROJECT_DIR}/build_swift"
@@ -11,7 +11,7 @@ EXPORT_PATH="${BUILD_DIR}/export"
 DMG_DIR="${BUILD_DIR}/dmg_staging"
 DMG_OUTPUT="${PROJECT_DIR}/${DMG_NAME}-${VERSION}.dmg"
 
-echo "=== Puck .dmg Builder ==="
+echo "=== Pluck .dmg Builder ==="
 echo ""
 
 # Step 1: Clean
@@ -21,8 +21,8 @@ rm -rf "$BUILD_DIR" "$DMG_OUTPUT"
 # Step 2: Build archive
 echo "[2/5] Building Xcode archive..."
 xcodebuild archive \
-    -project "${PROJECT_DIR}/Puck.xcodeproj" \
-    -scheme "Puck" \
+    -project "${PROJECT_DIR}/Pluck.xcodeproj" \
+    -scheme "Pluck" \
     -configuration Release \
     -archivePath "$ARCHIVE_PATH" \
     CODE_SIGN_IDENTITY="-" \
@@ -51,8 +51,8 @@ if [ ! -d "$APP_PATH" ]; then
     echo "ERROR: .app not found in archive. Trying direct build..."
     
     xcodebuild build \
-        -project "${PROJECT_DIR}/Puck.xcodeproj" \
-        -scheme "Puck" \
+        -project "${PROJECT_DIR}/Pluck.xcodeproj" \
+        -scheme "Pluck" \
         -configuration Release \
         -derivedDataPath "${BUILD_DIR}/DerivedData" \
         CODE_SIGN_IDENTITY="-" \
@@ -115,7 +115,7 @@ cp -R "$APP_PATH" "$DMG_DIR/"
 ln -s /Applications "$DMG_DIR/Applications"
 
 hdiutil create \
-    -volname "Puck" \
+    -volname "Pluck" \
     -srcfolder "$DMG_DIR" \
     -ov \
     -format UDZO \
@@ -130,4 +130,4 @@ echo "DMG: $DMG_OUTPUT"
 SIZE=$(du -h "$DMG_OUTPUT" | cut -f1)
 echo "Size: $SIZE"
 echo ""
-echo "To install: Open the .dmg and drag Puck to Applications."
+echo "To install: Open the .dmg and drag Pluck to Applications."

@@ -7,13 +7,15 @@ final class DownloadViewModel {
     
     var items: [DownloadItem] = []
     var urlInput: String = ""
-    var logMessages: [String] = []
     var isProcessing = false
     var ytdlpAvailable = false
     var ffmpegAvailable = false
+    var showError = false
+    var currentError: String?
     
     private let downloadManager = DownloadManager()
     private let conversionManager = ConversionManager()
+    private let nleManager = NLEIntegrationManager.shared
     private let settings = AppSettings.shared
     
     init() {
@@ -31,6 +33,7 @@ final class DownloadViewModel {
             log("yt-dlp found")
         } else {
             log("WARNING: yt-dlp not found. Install via: brew install yt-dlp")
+            surfaceError("yt-dlp not found. Install via: brew install yt-dlp")
         }
         
         if ffmpegAvailable {
@@ -38,7 +41,8 @@ final class DownloadViewModel {
         } else {
             log("WARNING: ffmpeg not found. Install via: brew install ffmpeg")
             if settings.audioFormat == .wav && settings.downloadMode == .audioOnly {
-                log("WARNING: WAV audio requires ffmpeg for conversion. Without it, audio settings (sample rate, bit depth) will not be applied.")
+                log("WARNING: WAV audio requires ffmpeg for conversion.")
+                surfaceError("ffmpeg not found. WAV audio requires ffmpeg for conversion. Install via: brew install ffmpeg")
             }
         }
     }
@@ -49,6 +53,7 @@ final class DownloadViewModel {
         let urls = parseURLs(from: text)
         guard !urls.isEmpty else {
             log("No valid URLs found.")
+            surfaceError("No valid URLs found. Paste URLs starting with http:// or https://")
             return
         }
         
@@ -145,7 +150,6 @@ final class DownloadViewModel {
     func clearAll() {
         cancelAll()
         items.removeAll()
-        logMessages.removeAll()
     }
     
     // MARK: - Private Processing
@@ -230,6 +234,9 @@ final class DownloadViewModel {
             item.statusMessage = "Complete"
             item.downloadProgress = 1.0
             item.conversionProgress = 1.0
+            
+            // Auto-import into NLE if enabled
+            await autoImportIfEnabled(item)
             
         } catch {
             item.status = .failed
@@ -366,11 +373,54 @@ final class DownloadViewModel {
             subItem.downloadProgress = 1.0
             subItem.conversionProgress = 1.0
             
+            // Auto-import into NLE if enabled
+            await autoImportIfEnabled(subItem)
+            
         } catch {
             subItem.status = .failed
             subItem.error = error.localizedDescription
             subItem.statusMessage = "Failed"
             log("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - NLE Integration
+    
+    private func autoImportIfEnabled(_ item: DownloadItem) async {
+        guard settings.autoImportToNLE,
+              settings.selectedNLE != .none,
+              let path = item.outputPath else { return }
+        
+        let app = settings.selectedNLE
+        log("Auto-importing into \(app.displayName)...")
+        
+        let result = await nleManager.importFile(at: path, into: app)
+        switch result {
+        case .success(let msg):
+            item.statusMessage = "Imported"
+            log("NLE: \(msg)")
+        case .failure(let msg):
+            log("NLE import failed: \(msg)")
+        }
+    }
+    
+    func importToNLE(_ item: DownloadItem) {
+        guard let path = item.outputPath else { return }
+        let app = settings.selectedNLE
+        guard app != .none else {
+            log("No editor selected. Configure in Settings > Editor Integration.")
+            return
+        }
+        
+        log("Importing into \(app.displayName)...")
+        Task {
+            let result = await nleManager.importFile(at: path, into: app)
+            switch result {
+            case .success(let msg):
+                log("NLE: \(msg)")
+            case .failure(let msg):
+                log("NLE import failed: \(msg)")
+            }
         }
     }
     
@@ -384,13 +434,12 @@ final class DownloadViewModel {
     
     func log(_ message: String) {
         let timestamp = Self.timeFormatter.string(from: Date())
-        let formatted = "[\(timestamp)] \(message)"
-        logMessages.append(formatted)
-        print(formatted)
-        // Cap log to 1000 entries to prevent unbounded memory growth
-        if logMessages.count > 1000 {
-            logMessages.removeFirst(logMessages.count - 1000)
-        }
+        print("[\(timestamp)] \(message)")
+    }
+    
+    func surfaceError(_ message: String) {
+        currentError = message
+        showError = true
     }
     
     private static let timeFormatter: DateFormatter = {
